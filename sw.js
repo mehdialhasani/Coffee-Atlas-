@@ -1,7 +1,7 @@
 // Coffee Atlas – Service Worker: hält die App offline bereit.
 // Neue Version = neuer Name, dann wird beim nächsten Öffnen alles frisch geladen.
-const V = 'coffee-atlas-274c38d1adaf';
-const FILES = ["./", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
+const V = 'coffee-atlas-1faf573a59ba';
+const FILES = ["./", "./manifest.webmanifest", "./icon-192-1dab70fd.png", "./icon-512-1dab70fd.png", "./icon-maskable-512-1dab70fd.png", "./apple-touch-icon-1dab70fd.png"];
 function clean(res) {  // umgeleitete Antworten neu verpacken (sonst lehnt Safari sie ab)
   if (!res.redirected) return Promise.resolve(res);
   return res.blob().then(b => new Response(b, { status: res.status, statusText: res.statusText, headers: res.headers }));
