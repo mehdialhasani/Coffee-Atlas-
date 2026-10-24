@@ -4121,19 +4121,28 @@ input[type=range]{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 .gx-card.gx-off .gx-stage{display:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gx-rb button{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}:root:not([data-theme="light"]) .gx-rb button.on{background:#e8603f;border-color:#e8603f;color:#1a0f0b}:root:not([data-theme="light"]) .gx-rb button.all.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}}:root[data-theme="dark"] .gx-rb button{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}:root[data-theme="dark"] .gx-rb button.on{background:#e8603f;border-color:#e8603f;color:#1a0f0b}:root[data-theme="dark"] .gx-rb button.all.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 @media (min-width:900px){.gx-card{display:grid;grid-template-columns:1.25fr 1fr;grid-template-areas:"cs cs" "st hd" "st rb" "st in";grid-template-rows:auto auto auto 1fr}.gx-cs{grid-area:cs}.gx-stage{grid-area:st}.gx-hd{grid-area:hd;padding-top:16px}.gx-rb{grid-area:rb;flex-wrap:wrap}.gx-info{grid-area:in}.flist-w .gx-card{grid-column:1/-1}}
-/* v139 · Glasleiste unten: gleitende Linse mit Feder, Ziehen, Schimmer (Test 2026-10-15-glasleiste-test, LGX_JS) */
-.tabbar{isolation:isolate;overflow:visible}
-.tabbar label{position:relative;z-index:2;background:none!important;box-shadow:none!important;transition:color .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+/* v143 · Glasleiste unten wie iOS 26 (Video 2026-10-25, LGX_JS): ruhig eingelassene Pille, beim Berühren klare Glaslinse mit Vergrößerung + Regenbogenkante */
+.tabbar{isolation:isolate;overflow:visible;transform-origin:50% 50%}
+.tabbar label{position:relative;z-index:2;background:none!important;box-shadow:none!important;transition:color .25s}
 .tabbar label.lgx-on{color:var(--accent)}
-.tabbar label.lgx-near{transform:scale(1.06)}
-.lgx-th{position:absolute;z-index:1;left:0;top:0;border-radius:999px;pointer-events:none;will-change:transform;
- background:var(--lg-thumb);box-shadow:var(--lg-thumb-shadow);transform-origin:50% 50%}
-.lgx-th::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 90% at var(--hx,30%) var(--hy,0%),rgba(255,255,255,.95),rgba(255,255,255,0) 55%);opacity:var(--ho,.55);mix-blend-mode:soft-light}
-.lgx-th::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,var(--ro,.0)),0 10px 26px -8px rgba(40,25,10,var(--so,.0))}
-.tabbar::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
- background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 48%,transparent 60%) no-repeat;background-size:250% 100%;background-position:var(--sx,150%) 0;mix-blend-mode:soft-light;opacity:.9}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabbar::after{opacity:.35}:root:not([data-theme="light"]) .lgx-th::before{opacity:calc(var(--ho,.55)*.5)}}:root[data-theme="dark"] .tabbar::after{opacity:.35}:root[data-theme="dark"] .lgx-th::before{opacity:calc(var(--ho,.55)*.5)}
-@media (prefers-reduced-motion:reduce){.tabbar::after{display:none}}
+.tabbar.lgx-act label{color:var(--ink-2)!important;transition:color .12s}
+:root{--lgx-bg:rgba(250,247,243,.97);--lgx-pill:rgba(60,40,20,.085)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lgx-bg:rgba(34,31,28,.97);--lgx-pill:rgba(0,0,0,.4);color-scheme:dark}}:root[data-theme="dark"]{--lgx-bg:rgba(34,31,28,.97);--lgx-pill:rgba(0,0,0,.4);color-scheme:dark}
+.lgx-th{position:absolute;z-index:3;left:0;top:0;border-radius:999px;pointer-events:none;overflow:hidden;will-change:transform;contain:layout style;background:var(--lgx-bg)}
+.lgx-th *{pointer-events:none}
+.lgx-f{position:absolute;inset:0;border-radius:inherit;background:var(--lgx-pill)}
+.lgx-in{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
+.lgx-c{position:absolute;display:flex;box-sizing:border-box;color:var(--accent);white-space:nowrap;font-style:normal}
+.lgx-c svg{color:inherit}
+.lgx-rim{position:absolute;inset:0;border-radius:inherit;opacity:0;
+ background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%,rgba(255,255,255,0) 70%,rgba(255,255,255,.3));
+ box-shadow:inset 0 0 0 .5px rgba(60,40,20,.28),inset 0 1.5px 1px rgba(255,255,255,.95),inset 0 -1.5px 1.5px rgba(255,255,255,.6),inset 0 0 12px rgba(60,40,20,.10)}
+.lgx-rim::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.32;
+ background:repeating-linear-gradient(97deg,#ff6b5e 0,#ffcb5e 7px,#86f5a6 14px,#5fb6ff 21px,#b77cff 28px,#ff6b5e 35px);
+ -webkit-mask:linear-gradient(180deg,#000 0,rgba(0,0,0,.35) 2.5px,transparent 6px,transparent calc(100% - 6px),rgba(0,0,0,.35) calc(100% - 2.5px),#000 100%);mask:linear-gradient(180deg,#000 0,rgba(0,0,0,.35) 2.5px,transparent 6px,transparent calc(100% - 6px),rgba(0,0,0,.35) calc(100% - 2.5px),#000 100%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lgx-rim{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 40%,rgba(255,255,255,0) 72%,rgba(255,255,255,.05));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),inset 0 0 0 1.5px rgba(255,255,255,.16),inset 0 2px 1.5px -.5px rgba(255,255,255,.32),inset 0 -2px 2px -1px rgba(255,255,255,.18),inset 0 0 12px rgba(0,0,0,.18)}:root:not([data-theme="light"]) .lgx-rim::before{opacity:.5}}:root[data-theme="dark"] .lgx-rim{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,0) 40%,rgba(255,255,255,0) 72%,rgba(255,255,255,.05));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),inset 0 0 0 1.5px rgba(255,255,255,.16),inset 0 2px 1.5px -.5px rgba(255,255,255,.32),inset 0 -2px 2px -1px rgba(255,255,255,.18),inset 0 0 12px rgba(0,0,0,.18)}:root[data-theme="dark"] .lgx-rim::before{opacity:.5}
 /* v141 · Etiketten im Schaufenster schwingen wie ein Pendel aus (ease-in-out je Abschnitt statt ease-out: kein Stocken und Ruck an den Umkehrpunkten) */
 #rezepte.mo-in .rz-win .rw-tag{animation-duration:1.6s;animation-timing-function:ease-in-out}
 /* v141 · Beim Öffnen von Kirsche/Aufbereitung/Röstung bleibt auch die Bedienleiste unsichtbar, bis Bild, Infokarte und Leiste ihre Lage haben; dann blendet sie weich ein (vorher rutschte sie ~10 px nach) */
@@ -5842,54 +5851,83 @@ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.c
  document.addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(spy)},true);
  try{new MutationObserver(function(){if(!raf)raf=requestAnimationFrame(spy)}).observe(document.body,{childList:true,subtree:true})}catch(e){}
  window.__spy=spy})();
-;// v139 · Glasleiste unten (Linse .lgx-th)
+;// v143 · Glasleiste unten wie iOS 26 (Video-Analyse 2026-10-25): ruhig liegt eine eingelassene Pille unter dem Reiter;
+// beim Antippen/Ziehen wird sie zur klaren Glaslinse (größer, vergrößert den Inhalt, färbt ihn in Akzentfarbe, Regenbogenkante),
+// die Leiste wächst leicht mit; beim Loslassen federt alles mit kleinem Nachschwingen zurück. Nur transform/opacity + Linsengröße.
 (function(){
 const bar=document.querySelector('.tabbar');if(!bar)return;
-const DK=matchMedia('(prefers-color-scheme: dark)').matches;const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const th=document.createElement('i');th.className='lgx-th';bar.prepend(th);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const L=[...bar.querySelectorAll('label')];
-let x=0,y=0,w=0,h=0,vx=0,vy=0,tx=0,ty=0,tw=0,thh=0,press=0,pressT=0,raf=0,drag=false,hl=30,first=true;
+const th=document.createElement('i');th.className='lgx-th';th.setAttribute('aria-hidden','true');
+const fl=document.createElement('span');fl.className='lgx-f';
+const inn=document.createElement('span');inn.className='lgx-in';
+const rim=document.createElement('span');rim.className='lgx-rim';
+th.append(fl,inn,rim);bar.prepend(th);
+const C=L.map(l=>{const c=document.createElement('span');c.className='lgx-c';c.innerHTML=l.innerHTML;inn.appendChild(c);return c});
+function geo(){L.forEach((l,i)=>{const c=C[i],s=c.style,cs=getComputedStyle(l);
+ s.left=l.offsetLeft+'px';s.top=l.offsetTop+'px';s.width=l.offsetWidth+'px';s.height=l.offsetHeight+'px';
+ ['flexDirection','alignItems','justifyContent','gap','paddingTop','paddingRight','paddingBottom','paddingLeft','fontFamily','fontSize','fontWeight','letterSpacing','lineHeight'].forEach(k=>s[k]=cs[k]);
+ const a=l.querySelector('svg'),b=c.querySelector('svg');if(a&&b){const r=a.getBoundingClientRect(),k=getComputedStyle(a);b.style.width=k.width;b.style.height=k.height;b.style.flex='none'}})}
+let x=0,y=0,w=0,h=0,vx=0,vy=0,vw=0,vh=0,tx=0,ty=0,tw=0,thh=0,p=0,vp=0,g=0,vg=0,gH=0,pP=0,raf=0,last=0,first=true,cur=null,hold=0,base='',scaled=false,pend=null,pendT=0;
+let pid=null,sx0=0,sy0=0,moved=false;
 const SUB={'hm-st':['hm-today'],'hm-ex':['hm-rj','hm-fd'],'hm-ar':['hm-fd'],'hm-cu':['hm-fd'],'hm-qz':['hm-fd']};/* v140 · Unterseiten: Linse beim Eltern-Reiter */
 function target(){const c=document.querySelector('input[name=home]:checked');if(!c)return L[0];for(const id of [c.id,...(SUB[c.id]||[])]){const lb=L.find(l=>l.htmlFor===id);if(lb)return lb}return L[0]}
-let cur=null;document.addEventListener('click',()=>requestAnimationFrame(()=>{if(!drag&&target()!==cur)setT(target())}));
-function setT(lb){cur=lb;tx=lb.offsetLeft;ty=lb.offsetTop;tw=lb.offsetWidth;thh=lb.offsetHeight;L.forEach(l=>l.classList.toggle('lgx-on',l===lb));if(first||RM){x=tx;y=ty;w=tw;h=thh;first=false;draw(0)}kick()}
-function draw(sp){
- const st=Math.min(Math.abs(vx)/900,.32),sy=Math.min(Math.abs(vy)/900,.32);
- const p=1+press*.14;
- const sx=(1+st-sy*.5)*p,syy=(1-st*.55+sy)*p;
- th.style.width=w+'px';th.style.height=h+'px';
- th.style.transform=`translate(${x}px,${y}px) scale(${sx.toFixed(3)},${syy.toFixed(3)})`;
- hl+= ((50-Math.max(-40,Math.min(40,vx/18)))-hl)*.2;
- th.style.setProperty('--hx',hl+'%');th.style.setProperty('--ho',(.55+press*.4+st).toFixed(2));
- th.style.background=DK?`linear-gradient(180deg,rgba(255,255,255,${(.30-.16*press).toFixed(2)}),rgba(255,255,255,${(.14-.08*press).toFixed(2)}))`:`linear-gradient(180deg,rgba(255,255,255,${(.98-.62*press).toFixed(2)}),rgba(255,255,255,${(.72-.5*press).toFixed(2)}))`;
- th.style.setProperty('--ro',(press*.7).toFixed(2));th.style.setProperty('--so',(press*.35).toFixed(2));
+function aim(lb){tx=lb.offsetLeft;ty=lb.offsetTop;tw=lb.offsetWidth;thh=lb.offsetHeight}
+function setT(lb){cur=lb;aim(lb);L.forEach(l=>l.classList.toggle('lgx-on',l===lb));if(first||RM){if(first)geo();x=tx;y=ty;w=tw;h=thh;vx=vy=vw=vh=0;first=false;draw()}kick()}
+document.addEventListener('click',()=>requestAnimationFrame(()=>{if(pid===null&&target()!==cur)setT(target())}));
+const hor=()=>bar.offsetWidth>bar.offsetHeight;
+let cA=false,cW=-1,cH=-1,cT='',cI='',cF=-1,cR=-1,cB='';
+function draw(){
+ const q=Math.max(0,Math.min(1,g)),H0=hor();
+ const Wp=H0?Math.max(w*1.4,h*1.32*1.35):w*1.2,Hp=H0?h*1.32:h*1.2;
+ const st=H0?Math.min(Math.abs(vx)/2600,.16):Math.min(Math.abs(vy)/2600,.16);
+ let W=(w+(Wp-w)*p),Hh=(h+(Hp-h)*p);if(H0){W*=1+st;Hh*=1-st*.35}else{Hh*=1+st;W*=1-st*.35}
+ const cx=x+w/2,cy=y+h/2,M=1+.17*p;
+ const Wr=Math.round(W*2)/2,Hr=Math.round(Hh*2)/2;
+ if(Wr!==cW){th.style.width=Wr+'px';cW=Wr}if(Hr!==cH){th.style.height=Hr+'px';cH=Hr}
+ const T=`translate3d(${(cx-Wr/2).toFixed(2)}px,${(cy-Hr/2).toFixed(2)}px,0)`;if(T!==cT){th.style.transform=T;cT=T}
+ const I=`translate(${(Wr/2).toFixed(2)}px,${(Hr/2).toFixed(2)}px) scale(${M.toFixed(4)}) translate(${(-cx).toFixed(2)}px,${(-cy).toFixed(2)}px)`;if(I!==cI){inn.style.transform=I;cI=I}
+ const F=+(1-q).toFixed(3),R=+q.toFixed(3);if(F!==cF){fl.style.opacity=F;cF=F}if(R!==cR){rim.style.opacity=R;cR=R}
+ const A=g>.04||Math.abs(tx-x)>1.5;if(A!==cA){bar.classList.toggle('lgx-act',A);cA=A}
+ const s=H0?1+.045*p:1;/* hochkant (Laptop) wächst die lange Leiste nicht mit */
+ if(Math.abs(s-1)>.0005){if(!scaled){bar.style.transform='';base=getComputedStyle(bar).transform;if(base==='none')base='';scaled=true}const B=`${base} scale(${s.toFixed(4)})`;if(B!==cB){bar.style.transform=B;cB=B}}
+ else if(scaled){bar.style.transform='';scaled=false;cB=''}
 }
-let last=0;
-function step(t){const dt=Math.min(.033,(t-(last||t))/1000)||.016;last=t;
- const k=drag?900:260,d=drag?2*Math.sqrt(900)*.9:2*Math.sqrt(260)*.62;
- const ax=k*(tx-x)-d*vx,ay=k*(ty-y)-d*vy;vx+=ax*dt;vy+=ay*dt;x+=vx*dt;y+=vy*dt;
- w+=(tw-w)*Math.min(1,dt*14);h+=(thh-h)*Math.min(1,dt*14);
- press+=((drag?1:0)-press)*Math.min(1,dt*12);
+function spring(v,dv,t,k,z,dt){const a=k*(t-v)-2*z*Math.sqrt(k)*dv;dv+=a*dt;return [v+dv*dt,dv]}
+function step(t){let dt=Math.min(.034,(t-(last||t))/1000)||.016;last=t;
+ if(pend&&t>=pendT){aim(pend);pend=null}
+ const down=pid!==null,far=Math.abs(tx-x)>3||Math.abs(ty-y)>3;
+ const P=RM?0:(down||t<hold||far?1:0);if(P<pP)gH=t+80;pP=P;const G=P||t<gH?1:0;/* Glas bleibt nach dem Loslassen kurz klar, die Leiste schrumpft schon (iPhone: ~80 ms) */
+ const n=dt>.02?3:2;dt/=n;
+ for(let i=0;i<n;i++){
+  const fast=down||far||t<hold,kp=fast?1800:430,zp=fast?.86:.8;
+  [x,vx]=spring(x,vx,tx,kp,zp,dt);[y,vy]=spring(y,vy,ty,kp,zp,dt);
+  [w,vw]=spring(w,vw,tw,kp,1,dt);[h,vh]=spring(h,vh,thh,kp,1,dt);
+  if(P>p)[p,vp]=spring(p,vp,P,1100,.92,dt);else[p,vp]=spring(p,vp,P,480,.6,dt);
+  if(G>g)[g,vg]=spring(g,vg,G,1100,.92,dt);else[g,vg]=spring(g,vg,G,700,1,dt);
+ }
  draw();
- const moving=Math.abs(tx-x)>.3||Math.abs(vx)>2||Math.abs(ty-y)>.3||Math.abs(vy)>2||Math.abs(press-(drag?1:0))>.01;
- if(moving)raf=requestAnimationFrame(step);else{raf=0;last=0;x=tx;y=ty;vx=vy=0;draw()}}
-function kick(){if(RM){x=tx;y=ty;w=tw;h=thh;draw();return}if(!raf){last=0;raf=requestAnimationFrame(step)}}
-document.addEventListener('change',e=>{if(e.target.name==='home')setT(target())});
-addEventListener('resize',()=>{first=true;setT(target())});
-if(window.ResizeObserver)new ResizeObserver(()=>{if(!drag){first=true;setT(target())}}).observe(bar);
-/* Ziehen: Linse folgt dem Finger, Loslassen waehlt den Reiter */
-let pid=null,sx0=0,moved=false;
-function nearest(px,py){let b=L[0],bd=1e9;const r=bar.getBoundingClientRect();L.forEach(l=>{const cx=l.offsetLeft+l.offsetWidth/2,cy=l.offsetTop+l.offsetHeight/2;const d=Math.hypot(px-r.left-cx,py-r.top-cy);if(d<bd){bd=d;b=l}});return b}
-bar.addEventListener('pointerdown',e=>{pid=e.pointerId;sx0=e.clientX;moved=false;drag=true;const lb=nearest(e.clientX,e.clientY);tx=lb.offsetLeft;ty=lb.offsetTop;tw=lb.offsetWidth;thh=lb.offsetHeight;kick()});
-bar.addEventListener('pointermove',e=>{if(e.pointerId!==pid)return;if(Math.abs(e.clientX-sx0)>8&&!moved){moved=true;try{bar.setPointerCapture(pid)}catch(_){}}
- if(!moved)return;const r=bar.getBoundingClientRect(),v=bar.offsetWidth>bar.offsetHeight;
- if(v){tx=Math.max(0,Math.min(bar.offsetWidth-tw,e.clientX-r.left-tw/2))}else{ty=Math.max(0,Math.min(bar.offsetHeight-thh,e.clientY-r.top-thh/2))}
- const lb=nearest(e.clientX,e.clientY);L.forEach(l=>l.classList.toggle('lgx-near',l===lb));kick()});
-function up(e){if(e.pointerId!==pid)return;pid=null;drag=false;L.forEach(l=>l.classList.remove('lgx-near'));
- const lb=nearest(e.clientX,e.clientY);if(moved){lb.click()}setT(moved?lb:target());}
-bar.addEventListener('pointerup',up);bar.addEventListener('pointercancel',e=>{if(e.pointerId!==pid)return;pid=null;drag=false;setT(target())});
-/* Lichtschimmer ueber die Leiste, nur bei sichtbarer Seite, nur alle paar Sekunden */
-if(!RM){let s0=0;function sh(t){if(document.hidden){s0=0;return document.addEventListener('visibilitychange',()=>requestAnimationFrame(sh),{once:true})}if(!s0)s0=t;const p=(t-s0)/1400;bar.style.setProperty('--sx',(150-p*200)+'%');if(p<1)requestAnimationFrame(sh);else{bar.style.setProperty('--sx','150%');s0=0;setTimeout(()=>requestAnimationFrame(sh),5200)}}setTimeout(()=>requestAnimationFrame(sh),1200)}
+ const busy=down||pend||t<hold||Math.abs(tx-x)>.25||Math.abs(vx)>3||Math.abs(ty-y)>.25||Math.abs(vy)>3||Math.abs(tw-w)>.25||Math.abs(thh-h)>.25||Math.abs(P-p)>.002||Math.abs(vp)>.02||t<gH||Math.abs(G-g)>.002||Math.abs(vg)>.02;
+ if(busy)raf=requestAnimationFrame(step);else{raf=0;last=0;x=tx;y=ty;w=tw;h=thh;vx=vy=vw=vh=0;p=P;vp=0;g=G;vg=0;draw()}}
+function kick(){if(RM){x=tx;y=ty;w=tw;h=thh;p=g=0;draw();return}if(!raf){last=0;raf=requestAnimationFrame(step)}}
+document.addEventListener('change',e=>{if(e.target.name==='home'&&pid===null)setT(target())});
+function re(){first=true;cW=cH=-1;cT=cI='';setT(target())}
+addEventListener('resize',re);
+if(window.ResizeObserver)new ResizeObserver(()=>{if(pid===null)re()}).observe(bar);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(re);
+/* Antippen: Linse wird an Ort und Stelle zu Glas, gleitet nach ~40 ms zum Reiter. Ziehen: Linse folgt dem Finger, Loslassen wählt. */
+function nearest(px,py){let b=L[0],bd=1e9;const r=bar.getBoundingClientRect(),s=r.width/bar.offsetWidth||1;L.forEach(l=>{const cx=l.offsetLeft+l.offsetWidth/2,cy=l.offsetTop+l.offsetHeight/2;const d=Math.hypot((px-r.left)/s-cx,(py-r.top)/s-cy);if(d<bd){bd=d;b=l}});return b}
+bar.addEventListener('pointerdown',e=>{if(pid!==null)return;pid=e.pointerId;sx0=e.clientX;sy0=e.clientY;moved=false;const lb=nearest(e.clientX,e.clientY);if(RM){aim(lb);kick();return}pend=lb;pendT=performance.now()+40;kick()});
+bar.addEventListener('pointermove',e=>{if(e.pointerId!==pid)return;if(Math.hypot(e.clientX-sx0,e.clientY-sy0)>8&&!moved){moved=true;pend=null;try{bar.setPointerCapture(pid)}catch(_){}}
+ if(!moved)return;const r=bar.getBoundingClientRect(),s=r.width/bar.offsetWidth||1;const lb=nearest(e.clientX,e.clientY);tw=lb.offsetWidth;thh=lb.offsetHeight;
+ if(hor()){tx=Math.max(0,Math.min(bar.offsetWidth-tw,(e.clientX-r.left)/s-tw/2))}else{ty=Math.max(0,Math.min(bar.offsetHeight-thh,(e.clientY-r.top)/s-thh/2))}
+ kick()});
+function up(e){if(e.pointerId!==pid)return;pid=null;hold=performance.now()+90;
+ if(pend){aim(pend);pend=null}
+ if(moved){const lb=nearest(e.clientX,e.clientY);lb.click();setT(lb)}else kick();
+ setTimeout(()=>{if(pid===null&&target()!==cur||pid===null&&(tx!==cur.offsetLeft||ty!==cur.offsetTop))setT(target())},350)}
+bar.addEventListener('pointerup',up);bar.addEventListener('pointercancel',e=>{if(e.pointerId!==pid)return;pid=null;pend=null;setT(target())});
+window.__lgx={state:()=>({x,w,p,g,tx,raf:!!raf})};
 requestAnimationFrame(()=>setT(target()));
 })();
 /* Stammbaum: x/y auf einer 1320×800-Fläche. p = Eltern [id, gestrichelt?]. t = Abstammung (geprüft 10./11.10.2026). k = Farbgruppe. */
